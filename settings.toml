@@ -1,0 +1,4 @@
+[hcme]
+# BEAM_DIR = "/path/to/BEAM/directory"
+# JAVA_EXEC_PATH = "java"
+# PROJECTS_DIR = ""

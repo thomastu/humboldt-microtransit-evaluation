@@ -1,0 +1,14 @@
+[[package]]
+name = "dynaconf"
+version = "3.1.4"
+summary = "The dynamic configurator for your Python Project"
+
+[metadata]
+lock_version = "3"
+content_hash = "sha256:a489c63e9439e4f9540972cd4247c8dcf24073b167b452e067d30766ce390f94"
+
+[metadata.files]
+"dynaconf 3.1.4" = [
+    {file = "dynaconf-3.1.4-py2.py3-none-any.whl", hash = "sha256:e6f383b84150b70fc439c8b2757581a38a58d07962aa14517292dcce1a77e160"},
+    {file = "dynaconf-3.1.4.tar.gz", hash = "sha256:b2f472d83052f809c5925565b8a2ba76a103d5dc1dbb9748b693ed67212781b9"},
+]
