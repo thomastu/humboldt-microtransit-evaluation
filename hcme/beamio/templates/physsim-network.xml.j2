@@ -3,15 +3,15 @@
 <network>
 <nodes>
 {% for node in nodes -%}
-    <node id="" x="" y= ""></node>
-{%- endfor %}
+    <node id="{{node.id}}" x="{{node.x}}" y="{{node.y}}"></node>
+{% endfor %}
 </nodes>
 <links>
 {% for link in links -%}
-    <link id ="{{link.id}}" from="{{}}" to="" length="" freespeed="" capacity="" permlanes="" oneway="1" modes="">
+    <link id ="{{link.id}}" from="{{link.u}}" to="{{link.v}}" length="{{link.length}}" freespeed="" capacity="{{link.capacity}}" permlanes="{{link.permlanes}}" oneway="1" modes="">
         <attributes>
             <attribute name="origid" class="java.lang.String">{{link.id}}</attribute>
-            <attribute name="type" class="java.lang.String">{{link.linkType}}</attribute>
+            <attribute name="type" class="java.lang.String">{{link.highwayType}}</attribute>
         </attributes>
     </link>
 {% endfor %}

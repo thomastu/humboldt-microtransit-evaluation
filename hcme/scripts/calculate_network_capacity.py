@@ -5,6 +5,8 @@ import statsmodels.formula.api as smf
 from lxml import etree
 from pyrosm import OSM
 
+from hcme.beamio.factory import TemplateLoader
+
 from prefect import task, Flow, Parameter
 from typing import Tuple
 
@@ -59,7 +61,7 @@ def parse_osm_network(osm_network_fp: str) -> Tuple[pd.DataFrame, pd.DataFrame]:
     """
     osm = OSM(osm_network_fp)
     nodes, links = osm.get_network(nodes=True, network_type="all")
-    links["maxspeed"] = links["maxspeed"] * mph_to_mps
+    # links["maxspeed"] = links["maxspeed"].str.match("\d+") * mph_to_mps
     return nodes, links
 
 
@@ -116,6 +118,7 @@ def calculate_network_capacity(links, reference_network):
     ).fit()
 
     # Now hot-encode the OSM link data
+    links["highwayType"] = links["highway"]
     links["highway"] = links["highway"].replace(highway_encoder)
     links["permlanes"] = links["lanes"].fillna(1).astype(float)
 
@@ -128,6 +131,20 @@ def save_link_data(links, output_dir):
     links.to_csv(f"{output_dir}/links.csv", index=False)
 
 
+@task
+def build_network(links, nodes, output_dir):
+    nodes = nodes.set_crs("EPSG:4326").to_crs("EPSG:26910")
+    nodes["x"] = nodes.geometry.x
+    nodes["y"] = nodes.geometry.y
+
+    template_data = {
+        "links": links.to_dict(orient="records"),
+        "nodes": nodes[["id", "x", "y"]].to_dict(orient="records"),
+    }
+    loader = TemplateLoader("network", data=template_data)
+    loader.write(f"{output_dir}/physsim-network.xml")
+
+
 with Flow("create_network_data") as flow:
     osm_network_fp = Parameter("osm_network_fp")
     physsim_fp = Parameter("physsim_fp")
@@ -137,6 +154,7 @@ with Flow("create_network_data") as flow:
     nodes, edges = parse_osm_network(osm_network_fp)
     links = calculate_network_capacity(edges, reference_network)
     save_link_data(links, output_dir)
+    build_network(links, nodes, output_dir)
 
 
 if __name__ == "__main__":

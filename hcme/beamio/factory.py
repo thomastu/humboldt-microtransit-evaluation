@@ -20,6 +20,7 @@ template_registry = {
     INPUTS.POPULATION.value: "population.xml.j2",
     INPUTS.POPULATIONATTRIBUTES.value: "population_attributes.xml.j2",
     INPUTS.HOUSEHOLDATTRIBUTES.value: "household_attributes.xml.j2",
+    INPUTS.NETWORK.value: "physsim-network.xml.j2",
 }
 
 DEFAULT_NS = "default"

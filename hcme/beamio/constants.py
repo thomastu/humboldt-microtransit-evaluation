@@ -9,3 +9,4 @@ class InputRegistry(Enum):
     POPULATIONATTRIBUTES = "population_attributes"
     VEHICLES = "vehicles"
     VEHICLE_TYPES = "vehicle_types"
+    NETWORK = "network"
