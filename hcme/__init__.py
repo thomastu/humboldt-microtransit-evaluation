@@ -1,8 +1,10 @@
 """
 Humboldt County Microtransit Evaluation codebase
 """
+try:
+    from importlib import metadata
+except ImportError:  # for Python<3.8
+    import importlib_metadata as metadata
 
-from importlib import metadata
-from loguru import logger
 
 __version__ = metadata.version("hcme")
